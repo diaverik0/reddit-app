@@ -1,25 +1,48 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState} from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [subreddit, setSubreddit] = useState('');
+  const [postsInSubreddit, setPostsInSubredit] = useState('');
+
+ 
+  let redditObject;
+
+
+
+async function reachReddit (str) {
+  const response = await fetch (`https://www.reddit.com/r/${str}.json`);
+  const data = await response.json();
+  console.log(data);
+  redditObject = data.data.children[0].data.selftext;
+  setPostsInSubredit(data.data.children[0].data.selftex);
+  alert(redditObject)
+
+  return redditObject
 }
 
-export default App;
+const onSubmit = (e) => {
+  e.preventDefault();
+  reachReddit(subreddit);
+  setSubreddit('');
+}
+
+  return (
+   <wrapper>
+   <header class='top-brand'>
+    <div>REDDITOR VIEW</div>
+    <form onSubmit={onSubmit}>
+      <input type='text' value={subreddit} onChange={e => setSubreddit(e.target.value)}/>
+      <input type='submit' value='Search'/>
+    </form>
+    </header>
+    <div>
+      <p>{subreddit}</p>
+      <button onClick={reachReddit}>Load Reddit</button>
+      <p>{postsInSubreddit}</p>
+    </div>
+   </wrapper>
+  )
+}
+
+export default App
