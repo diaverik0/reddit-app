@@ -1,30 +1,24 @@
 import './App.css';
-import {useState} from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchFromReddit } from './slices/searchSlice';
+import { Posts } from './components/posts.js'
+import { useSelector } from 'react-redux';
+import { selectSearchResults } from './slices/searchSlice.js';
 
 function App() {
+  const dispatch = useDispatch();
   const [subreddit, setSubreddit] = useState('');
-  const [postsInSubreddit, setPostsInSubredit] = useState('');
+  const [currentSubreddit, setCurrentSubreddit] = useState('');
+  const results = useSelector(selectSearchResults)
 
- 
-  let redditObject;
-
-
-
-async function reachReddit (str) {
-  const response = await fetch (`https://www.reddit.com/r/${str}.json`);
-  const data = await response.json();
-  console.log(data);
-  redditObject = data.data.children[0].data.selftext;
-  setPostsInSubredit(data.data.children[0].data.selftex);
-  alert(redditObject)
-
-  return redditObject
-}
 
 const onSubmit = (e) => {
   e.preventDefault();
-  reachReddit(subreddit);
-  setSubreddit('');
+  dispatch(fetchFromReddit(subreddit));
+  setCurrentSubreddit(subreddit);
+  setSubreddit("");
+;
 }
 
   return (
@@ -37,12 +31,17 @@ const onSubmit = (e) => {
     </form>
     </header>
     <div>
-      <p>{subreddit}</p>
-      <button onClick={reachReddit}>Load Reddit</button>
-      <p>{postsInSubreddit}</p>
+      <p>{currentSubreddit}</p>
+      <Posts />
     </div>
    </wrapper>
   )
 }
 
 export default App
+
+//Maps results form list in terms of selftext
+//{results.map(item => <li>{item.content}</li>)}
+
+//Wether to render Posts list
+//{results.length ? <Posts /> : null}
