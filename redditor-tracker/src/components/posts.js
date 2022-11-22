@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { selectSearchResults } from '../slices/searchSlice.js';
 
 export const Posts = () => {
-    console.log(useSelector(selectSearchResults));
     const results = useSelector(selectSearchResults);
     return(
       <div>

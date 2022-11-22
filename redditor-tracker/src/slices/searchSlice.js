@@ -18,6 +18,14 @@ export const fetchFromReddit = createAsyncThunk(
     }
 )
 
+export const fetchFromRedditInfo = createAsyncThunk(
+    'searchResults/fetchFromRedditInfo',
+    async (str) => {
+    const response = await fetch (`https://www.reddit.com/search.json?q=${encodeURIComponent(str)}`);
+    const json = await response.json();
+    console.log(json);
+    }
+)
 
 export const searchResultsSlice = createSlice({
     name: 'searchResults',
@@ -40,8 +48,27 @@ export const searchResultsSlice = createSlice({
         [fetchFromReddit.rejected]: (state, action) => {
             state.isLoading = false;
             state.isError = true;
+        },
+
+         //Content Search 
+
+        [fetchFromRedditInfo.pending]: (state, action) => {
+            state.isLoading = true;
+            state.isError = false;
+        },
+        [fetchFromRedditInfo.fulfilled]: (state, action) => {
+            state.searchResults = action.payload;
+            state.isLoading = false;
+            state.isError = false;
+        },
+        [fetchFromRedditInfo.rejected]: (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
         }
     }
+       
+
+
 })
 
 export const selectSearchResults = state => state.searchResults.searchResults;

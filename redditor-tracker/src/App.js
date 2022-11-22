@@ -1,47 +1,56 @@
-import './App.css';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchFromReddit } from './slices/searchSlice';
-import { Posts } from './components/posts.js'
-import { useSelector } from 'react-redux';
-import { selectSearchResults } from './slices/searchSlice.js';
+import {
+    createBrowserRouter,
+    RouterProvider,
+    NavLink,
+    Outlet,
+    Route,
+    Form
+  } from "react-router-dom";
 
-function App() {
-  const dispatch = useDispatch();
-  const [subreddit, setSubreddit] = useState('');
-  const [currentSubreddit, setCurrentSubreddit] = useState('');
-  const results = useSelector(selectSearchResults)
+import { SearchTool } from "./components/searchTool";
+import { Posts } from './components/posts'
 
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Root />,
+      children: [
+        { path: "/subreddit",
+        element: <p>Subreddit Results Here...</p>},
+        { path: "/content",
+        element: <p>Content Results Here...</p>}
+        ],
+    
+  }]);
 
-const onSubmit = (e) => {
-  e.preventDefault();
-  dispatch(fetchFromReddit(subreddit));
-  setCurrentSubreddit(subreddit);
-  setSubreddit("");
-;
+function App () {
+    return (
+        <div>
+        <SearchTool/>
+        <RouterProvider router={router} />
+        </div>
+    )
+
 }
 
-  return (
-   <wrapper>
-   <header class='top-brand'>
-    <div>REDDITOR VIEW</div>
-    <form onSubmit={onSubmit}>
-      <input type='text' value={subreddit} onChange={e => setSubreddit(e.target.value)}/>
-      <input type='submit' value='Search'/>
-    </form>
-    </header>
-    <div>
-      <p>{currentSubreddit}</p>
-      <Posts />
-    </div>
-   </wrapper>
-  )
+function Root () {
+    return(
+        <div>
+        <ul>
+            <li><NavLink to="/subreddit">Subreddit</NavLink></li>
+            <li><NavLink to="/content">Content</NavLink></li>
+        </ul>
+        <Form method="get" action='/subreddit' onSubmit={console.log('submitted')}>
+        <input type="text" name="title"/>
+        <button type="submit">Submit</button>
+        </Form>
+        <Outlet />
+        </div>
+    )
+}
+
+function MyForm () {
+
 }
 
 export default App
-
-//Maps results form list in terms of selftext
-//{results.map(item => <li>{item.content}</li>)}
-
-//Wether to render Posts list
-//{results.length ? <Posts /> : null}
