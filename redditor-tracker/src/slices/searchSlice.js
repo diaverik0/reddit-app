@@ -30,11 +30,16 @@ export const fetchFromRedditInfo = createAsyncThunk(
 export const searchResultsSlice = createSlice({
     name: 'searchResults',
     initialState: {
+        searchTerm:'',
         searchResults: {},
         isLoading: false,
         isError: false
     },
-    reducers:{},
+    reducers:{
+        getSearchTerm: (state, action) => {
+            state.searchTerm = action.payload;
+        }
+    },
     extraReducers:{
         [fetchFromReddit.pending]: (state, action) => {
             state.isLoading = true;
@@ -72,4 +77,6 @@ export const searchResultsSlice = createSlice({
 })
 
 export const selectSearchResults = state => state.searchResults.searchResults;
+export const selectTerm = state => state.searchResults.searchTerm;
+export const {getSearchTerm} = searchResultsSlice.actions;
 export default searchResultsSlice.reducer;
