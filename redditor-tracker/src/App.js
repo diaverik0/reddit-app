@@ -11,7 +11,7 @@ import { SearchTool } from "./components/searchTool";
 import { Posts } from './components/posts'
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFromReddit, selectSearchResults, getSearchTerm, selectTerm } from "./slices/searchSlice";
+import { fetchFromReddit, fetchFromRedditInfo, selectSearchResults, getCurrentLocation, } from "./slices/searchSlice";
 import { useState } from 'react';
 
   const router = createBrowserRouter([
@@ -22,7 +22,10 @@ import { useState } from 'react';
         { path: "/",
         element: <Home />},
         { path: "results/:term",
-        element: <Results />}
+        element: <Results />,},
+        { path: "subreddit/:subreddit",
+        element: <Subreddit />
+        }
         ],
     
   }]);
@@ -55,7 +58,6 @@ function Root () {
 
 function Home () {
     const dispatch = useDispatch();
-    dispatch(getSearchTerm(''));
     useEffect(() => {
         dispatch(fetchFromReddit('popular'))}, []);
     return (
@@ -69,12 +71,24 @@ function Home () {
 function Results () {
     const dispatch = useDispatch();
     let { term } = useParams();
-    dispatch(getSearchTerm(term));
     useEffect(() => {
-        dispatch(fetchFromReddit(term))}, [term]);
+        dispatch(fetchFromRedditInfo(term))}, [term]);
     return (
         <div>
         <p>Search Results...</p>
+        <Posts params={term}/>
+        </div>
+    )
+}
+
+function Subreddit () {
+    const dispatch = useDispatch();
+    let { subreddit } = useParams();
+    useEffect(() => {
+        dispatch(fetchFromReddit(subreddit))}, [subreddit]);
+    return (
+        <div>
+        <p>R/{subreddit}</p>
         <Posts />
         </div>
     )
