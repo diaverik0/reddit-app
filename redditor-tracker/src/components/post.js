@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { fetchComments } from '../slices/searchSlice';
+import { fetchComments, deleteComments } from '../slices/searchSlice';
 import { Comments } from './comments';
 import { NavLink, useParams, useSearchParams } from 'react-router-dom';
 
@@ -7,7 +7,6 @@ import { NavLink, useParams, useSearchParams } from 'react-router-dom';
 export const Post = ({item, params}) => {
     const dispatch = useDispatch();
     const parentId = item.id;
-    const [searchParams, setSearchParams] = useSearchParams();
     const seeComments = (request) => {
       dispatch(fetchComments(request));
     }
@@ -25,3 +24,5 @@ export const Post = ({item, params}) => {
 }
 
 //    dispatch(fetchComments(permalink))
+
+//<p>r/<NavLink to={`../subreddit/${item.subreddit}`}>{item.subreddit}</NavLink> | ups: {item.upVotes} | comments: {item.commentsNum}</p>

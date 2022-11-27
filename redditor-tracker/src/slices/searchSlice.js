@@ -3,10 +3,12 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 const redditLocation = 'https://www.reddit.com/'
 const redditSubreddit = 'r/';
 const redditSearch = 'search.json?q=';
+let mainParam ;
 
 export const fetchFromReddit = createAsyncThunk(
     'searchResults/fetchFromReddit',
     async (str) => {
+    mainParam = `https://www.reddit.com/r/${str}.json`;
     const response = await fetch (`https://www.reddit.com/r/${str}.json`);
     const json = await response.json();
     return json.data.children.map(item => ({
@@ -29,7 +31,8 @@ export const fetchFromReddit = createAsyncThunk(
 export const loadMore = createAsyncThunk(
     'searchResults/loadMore',
     async (afterCode) => {
-    const response = await fetch (`https://www.reddit.com/r/3ds.json?after=${afterCode}`);
+        console.log(mainParam);
+    const response = await fetch (`${mainParam}?after=${afterCode}`);
     const json = await response.json();
     return json.data.children.map(item => ({
         subreddit: item.data.subreddit,
@@ -51,6 +54,7 @@ export const loadMore = createAsyncThunk(
 export const fetchFromRedditInfo = createAsyncThunk(
     'searchResults/fetchFromRedditInfo',
     async (str) => {
+    mainParam = `https://www.reddit.com/search.json?q=${encodeURIComponent(str)}&`;
     const response = await fetch (`https://www.reddit.com/search.json?q=${encodeURIComponent(str)}`);
     const json = await response.json();
     return json.data.children.map(item => ({
@@ -71,7 +75,7 @@ export const fetchFromRedditInfo = createAsyncThunk(
 )
 
 export const fetchComments = createAsyncThunk(
-    'comments/fethComments',
+    'searchResults/fetchComments',
     async (payload) => {
         const {id, permalink} = payload;
         const response = await fetch(
@@ -101,8 +105,12 @@ export const searchResultsSlice = createSlice({
         isError: false
     },
     reducers:{
-        getCurrentLocation: (state, action) => {
-            state.searchTerm = action.payload;
+        deleteComments: (state, action) => {
+            const {parentId} = action.payload;
+            for (const post of state.searchResults) {
+                if (post.id === parentId)
+                { post.comments = [] }
+            }
         }
     },
     extraReducers:{
@@ -183,5 +191,5 @@ export const searchResultsSlice = createSlice({
 
 export const selectSearchResults = state => state.searchResults.searchResults;
 export const selectAfterCode = state => state.searchResults.after;
-export const { getCurrentLocation } = searchResultsSlice.actions;
+export const { deleteComments } = searchResultsSlice.actions;
 export default searchResultsSlice.reducer;

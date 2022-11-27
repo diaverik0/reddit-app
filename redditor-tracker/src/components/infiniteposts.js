@@ -2,25 +2,32 @@ import { Post } from './post.js'
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSearchResults, selectAfterCode } from '../slices/searchSlice.js';
 import { loadMore } from '../slices/searchSlice.js';
-import { InfiniteScroll } from 'react-infinite-scroll-component'
+import  InfiniteScroll from 'react-infinite-scroll-component'
 
 export const Posts = ({params}) => {
     const dispatch = useDispatch();
     const results = useSelector(selectSearchResults);
     const afterCode = useSelector(selectAfterCode);
 
-    const loadMorePosts = () => {
+    const fetchMoreData = () => {
       dispatch(loadMore(afterCode));
     }
 
     return(
       <div>
+        <InfiniteScroll
+          dataLength={Object.keys(results).length}
+          next={fetchMoreData}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+       >
         <ul>
-        {Object.values(results).map((item) => (<Post item={item} params={params}/>))}
+          {Object.values(results).map((item) => (
+            <Post item={item}/>
+          ))}
         </ul>
-        <button onClick={(e) => loadMorePosts()}>Load More Posts</button>
+        </InfiniteScroll>
       </div>
-      
     )
 } 
 
