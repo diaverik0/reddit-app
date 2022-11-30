@@ -7,14 +7,11 @@ import {
   Form
 } from "react-router-dom";
 
-import { SearchTool } from "./components/searchTool";
 import { Posts } from './components/infiniteposts'
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loadMore, fetchFromReddit, fetchFromRedditInfo, selectSearchResults, getCurrentLocation, loadMorePosts, selectAfterCode} from "./slices/searchSlice";
+import { loadMore, fetchFromReddit, fetchFromRedditInfo, selectAfterCode} from "./slices/searchSlice";
 import { useState } from 'react';
-
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 const router = createBrowserRouter([
   {
@@ -46,12 +43,14 @@ function App () {
 function Root () {
 
   const [term, setTerm] = useState('');
-  const dispatch = useDispatch();;
 
   return(
       <div>
-      <NavLink to="/">Home</NavLink>
-      <MyForm term={term} setTerm={setTerm}/>
+      <nav style={{backgroundColor: '#ddd', width: '100%', display: 'flex', padding: '20px'}}>
+      <span style={{color: 'red'}}><NavLink to="/">Home</NavLink></span>
+      <span style={{display: 'block'}}><MyForm term={term} setTerm={setTerm} /></span>
+      </nav>
+      <br/>
       <Outlet />
       </div>
   )
@@ -88,7 +87,7 @@ function Subreddit () {
   const dispatch = useDispatch();
   let { subreddit } = useParams();
   useEffect(() => {
-      dispatch(fetchFromReddit(subreddit))}, [subreddit]);
+      dispatch(fetchFromReddit(subreddit))}, [dispatch]);
   return (
       <div>
       <p>R/{subreddit}</p>

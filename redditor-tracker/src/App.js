@@ -72,7 +72,7 @@ function Results () {
     const dispatch = useDispatch();
     let { term } = useParams();
     useEffect(() => {
-        dispatch(fetchFromRedditInfo(term))}, [term]);
+        dispatch(fetchFromRedditInfo(term))}, [dispatch]);
     return (
         <div>
         <p>Search Results...</p>
@@ -85,7 +85,7 @@ function Subreddit () {
     const dispatch = useDispatch();
     let { subreddit } = useParams();
     useEffect(() => {
-        dispatch(fetchFromReddit(subreddit))}, [subreddit]);
+        dispatch(fetchFromReddit(subreddit))}, [dispatch]);
     return (
         <div>
         <p>R/{subreddit}</p>

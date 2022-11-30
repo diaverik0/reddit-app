@@ -1,8 +1,10 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-
+/*
 const redditLocation = 'https://www.reddit.com/'
 const redditSubreddit = 'r/';
 const redditSearch = 'search.json?q=';
+*/
+
 let mainParam ;
 
 export const fetchFromReddit = createAsyncThunk(
@@ -106,9 +108,8 @@ export const searchResultsSlice = createSlice({
     },
     reducers:{
         deleteComments: (state, action) => {
-            const {parentId} = action.payload;
             for (const post of state.searchResults) {
-                if (post.id === parentId)
+                if (post.id === action.payload)
                 { post.comments = [] }
             }
         }
