@@ -62,7 +62,7 @@ function Home () {
         dispatch(fetchFromReddit('popular'))}, []);
     return (
         <div>
-        <p>What's popular right now!</p>
+        <p className="resultsTitle">What's popular right now!</p>
         <Posts />
         </div>
     )

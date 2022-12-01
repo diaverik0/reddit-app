@@ -33,7 +33,6 @@ export const fetchFromReddit = createAsyncThunk(
 export const loadMore = createAsyncThunk(
     'searchResults/loadMore',
     async (afterCode) => {
-        console.log(mainParam);
     const response = await fetch (`${mainParam}?after=${afterCode}`);
     const json = await response.json();
     return json.data.children.map(item => ({
@@ -72,25 +71,32 @@ export const fetchFromRedditInfo = createAsyncThunk(
         id: item.data.id,
         type: item.kind,
         content: item.data.selftext,
-        comments: {}}))
+        comments: []}))
     }
 )
 
+
 export const fetchComments = createAsyncThunk(
     'searchResults/fetchComments',
-    async (payload) => {
-        const {id, permalink} = payload;
+    async (request) => {
+        const {id, permalink} = request;
         const response = await fetch(
-            `https://www.reddit.com/${permalink}.json`
+            `https://www.reddit.com/${permalink}.json?limit=30`
           );
           const json = await response.json();
+          console.log(json[1].data.children);
           return ({
             parentId: id,
-            postComments: (json[1].data.children.map((item) => ({
+            postComments: (json[1].data.children.filter(block => block.kind === "t1").map((item) => 
+
+            ({
                 id: item.data.name,
                 text: item.data.body,
                 ups: item.data.ups
-              })))
+              })
+      
+            
+            ))
           })
           ;
     }

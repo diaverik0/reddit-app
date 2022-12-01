@@ -1,15 +1,10 @@
-const style = {
-    backgroundColor: '#DDD',
-    borderRadius: '5px',
-    padding: '10px',
-    margin: '10px'
-  }
+import styles from '../style-modules/mystyle.module.css'
 
 export const Comment = ({comm}) => {
     return (
-        <li style={style} key={comm.id}>
-            <p>{comm.text}</p>
-            <p>ups: {comm.ups}</p>
+        <li id={styles.singleComment} key={comm.id}>
+            <p className={styles.commentText}>"{comm.text}"</p>
+            <p className={styles.commentUps}>ups: {comm.ups}</p>
         </li>
     )
     

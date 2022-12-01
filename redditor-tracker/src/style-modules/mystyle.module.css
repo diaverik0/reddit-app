@@ -1,0 +1,70 @@
+#redditPost {
+background-color: #EEEEEE;
+border-radius: 5px;
+padding: 20px;
+margin: 10px;
+}
+
+#redditPost a {
+    color: #7732F0;
+    font-weight: bold;
+}
+
+#redditPost img {
+    margin-right: 15px;
+}
+
+#redditPost button {
+    background-color: #341669;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+}
+
+#redditPost button:hover {
+    background-color: #DD32F0;
+    transition-duration: 0.4s;
+}
+
+.postTitle {
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.postSub {
+    font-size: 14px;
+    font-style: italic;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+
+#singleComment {
+    background-color: #DDD;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+}
+
+.commentText {
+    color: #333;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.2;
+}
+
+.commentUps {
+    color: #777;
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
